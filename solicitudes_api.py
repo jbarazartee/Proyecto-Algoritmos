@@ -25,7 +25,7 @@ class ConsultasMuseo:
         departamentos = self.obtener_departamentos()
         print("Departamentos disponibles:")
         for d in departamentos:
-            print(d)
+            print(d.descripcion())
 
     def buscar_pieza_basica(self, object_id):
         url = f"https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}"
