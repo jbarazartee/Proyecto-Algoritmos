@@ -1,6 +1,8 @@
+class Pieza_Detallada
 
-#Módulo que define las entidades principales del sistema de gestión de piezas artísticas y áreas del museo.
-
+    #Describe una pieza artística con todos sus detalles relevantes:
+    título, autor, nacionalidad, fechas, tipo, año y enlace a imagen.
+    
    def __init__(self, codigo, titulo, autor, origen, nacimiento, fallecimiento, tipo, anio, url_imagen):
         self.codigo = codigo
         self.titulo = titulo
