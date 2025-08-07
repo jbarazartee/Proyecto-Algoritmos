@@ -156,7 +156,6 @@ def buscar_por_autor(self, nombre_autor):
                     if pieza:
                         print(pieza.resumen())
                         piezas.append(pieza)
-                    time.sleep(0.5)
                 except Exception:
                     if not error_mostrado:
                         print("Algunas piezas no pudieron ser recuperadas o no existen. Se omiten del listado.")
