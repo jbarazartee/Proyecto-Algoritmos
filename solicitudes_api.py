@@ -3,6 +3,7 @@
 import requests
 from Departamento import Departamento
 from Pieza_Detallada import Pieza_Detallada
+from visor import GestorImagen
 from nacionalidades_disponibles import obtener_nacionalidades
 
 class ConsultasMuseo:
@@ -61,7 +62,8 @@ class ConsultasMuseo:
                 nacimiento=data.get("artistBeginDate", "No encontrado"),
                 fallecimiento=data.get("artistEndDate", "No encontrado"),
                 tipo=data.get("classification", "No encontrado"),
-                anio=data.get("objectDate", "No encontrado") 
+                anio=data.get("objectDate", "No encontrado"),
+                url_imagen=data.get("primaryImage", "No encontrado")
             )
         except Exception:
             return None
@@ -90,4 +92,40 @@ class ConsultasMuseo:
                         error_mostrado = True
         except Exception:
             print("No se pudo obtener la lista de piezas para este departamento.")
+        return piezas
+
+    def buscar_por_nacionalidad(self):
+        lista = obtener_nacionalidades()
+        print("Nacionalidades disponibles:")
+        for n in lista:
+            print(n)
+        nacionalidad = input("Ingrese la nacionalidad del autor: ").strip()
+        if nacionalidad not in lista:
+            print("Nacionalidad no encontrada.")
+            return []
+        url = f"https://collectionapi.metmuseum.org/public/collection/v1/search?artistOrCulture=true&q={nacionalidad.lower()}"
+        piezas = []
+        error_mostrado = False
+        try:
+            resp = requests.get(url)
+            ids = resp.json().get("objectIDs", [])
+            contador = 0
+            total = len(ids)
+            for oid in ids:
+                try:
+                    pieza = self.buscar_pieza_basica(oid)
+                    if pieza:
+                        print(pieza.resumen())
+                        piezas.append(pieza)
+                except Exception:
+                    if not error_mostrado:
+                        print("Algunas piezas no pudieron ser recuperadas o no existen. Se omiten del listado.")
+                        error_mostrado = True
+                contador += 1
+                if contador % 20 == 0 and contador < total:
+                    seguir = input("¿Mostrar más piezas? (si/no): ").strip().lower()
+                    if seguir != "si":
+                        break
+        except Exception:
+            print("No se pudo obtener la lista de piezas para esta nacionalidad.")
         return piezas
