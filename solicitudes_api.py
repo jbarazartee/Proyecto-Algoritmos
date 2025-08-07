@@ -95,6 +95,11 @@ class ConsultasMuseo:
         return piezas
 
     def buscar_por_nacionalidad(self):
+        """
+        Hace un resumen de las piezas por la nacionalidad de sus autores
+
+        Returns: una lista de objetos con la informacion de las piezas encontradas
+        """
         lista = obtener_nacionalidades()
         print("Nacionalidades disponibles:")
         for n in lista:
@@ -128,4 +133,39 @@ class ConsultasMuseo:
                         break
         except Exception:
             print("No se pudo obtener la lista de piezas para esta nacionalidad.")
+        return piezas
+
+def buscar_por_autor(self, nombre_autor):
+        """
+        Busca piezas por nombre de autor y muestra un resumen de cada una de 20 en 20
+
+        Returns: lista de piezas con informacion basica
+        """
+        url = f"https://collectionapi.metmuseum.org/public/collection/v1/search?artistOrCulture=true&q={nombre_autor.lower()}"
+        piezas = []
+        error_mostrado = False
+        try:
+            resp = requests.get(url)
+            time.sleep(0.5)
+            ids = resp.json().get("objectIDs", [])
+            contador = 0
+            total = len(ids)
+            for oid in ids:
+                try:
+                    pieza = self.buscar_pieza_basica(oid)
+                    if pieza:
+                        print(pieza.resumen())
+                        piezas.append(pieza)
+                    time.sleep(0.5)
+                except Exception:
+                    if not error_mostrado:
+                        print("Algunas piezas no pudieron ser recuperadas o no existen. Se omiten del listado.")
+                        error_mostrado = True
+                contador += 1
+                if contador % 20 == 0 and contador < total:
+                    seguir = input("¿Mostrar más piezas? (si/no): ").strip().lower()
+                    if seguir != "si":
+                        break
+        except Exception:
+            print("No se pudo obtener la lista de piezas para este autor.")
         return piezas
