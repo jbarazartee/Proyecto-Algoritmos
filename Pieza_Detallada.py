@@ -1,7 +1,6 @@
 class Pieza_Detallada
 
-    #Describe una pieza artística con todos sus detalles relevantes:
-    título, autor, nacionalidad, fechas, tipo, año y enlace a imagen.
+    #Describe una pieza artística con todos sus detalles relevantes: título, autor, nacionalidad, fechas, tipo, año y enlace a imagen.
     
    def __init__(self, codigo, titulo, autor, origen, nacimiento, fallecimiento, tipo, anio, url_imagen):
         self.codigo = codigo
