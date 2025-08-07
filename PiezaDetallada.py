@@ -11,4 +11,8 @@ class PiezaDetallada:
         self.anio = anio
         self.url_imagen = url_imagen
 
+   def resumen (self):
+      #Escribe la informacion basica de la pieza: codigo, titulo y autor 
+       return f"{self.codigo} - {self.titulo} ({self.autor})"
+
   #falta el metodo que haga un print resumido (que lleve codigo, titulo y autor)
