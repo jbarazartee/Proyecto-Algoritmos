@@ -1,4 +1,4 @@
-class Pieza_Detallada
+class Pieza_Detallada:
     """
     Describe una pieza artística con todos sus detalles relevantes: título, autor, nacionalidad, fechas, tipo, año y enlace a imagen.
     """
