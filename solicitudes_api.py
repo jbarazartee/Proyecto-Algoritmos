@@ -133,9 +133,9 @@ class ConsultasMuseo:
                         break
         except Exception:
             print("No se pudo obtener la lista de piezas para esta nacionalidad.")
-        return piezas
+            return piezas
 
-def buscar_por_autor(self, nombre_autor):
+    def buscar_por_autor(self, nombre_autor):
         """
         Busca piezas por nombre de autor y muestra un resumen de cada una de 20 en 20
 
@@ -168,3 +168,39 @@ def buscar_por_autor(self, nombre_autor):
         except Exception:
             print("No se pudo obtener la lista de piezas para este autor.")
         return piezas
+
+    def detalles_pieza(self, object_id):
+        """
+        Muestra los detalles completos de una pieza
+        Args: object_id(int): el unico de la pieza
+        Return: Pieza_Detallada con la informacion
+        """
+        try:
+            pieza = self.buscar_pieza_basica(object_id)
+        except Exception:
+            print("No se pudo obtener información de la obra. Intente con otro ID.")
+            return None
+        if pieza:
+            print(f"\nDetalles de la pieza {object_id}:")
+            print(f"Título: {pieza.titulo}")
+            print(f"Autor: {pieza.autor}")
+            print(f"Nacionalidad: {pieza.origen}")
+            print(f"Nacimiento: {pieza.nacimiento}")
+            print(f"Fallecimiento: {pieza.fallecimiento}")
+            print(f"Tipo: {pieza.tipo}")
+            print(f"Año: {pieza.anio}")
+            if pieza.url_imagen and pieza.url_imagen != "No encontrado":
+                print(f"Imagen: {pieza.url_imagen}")
+                ver = input("¿Ver imagen de la pieza? (si/no): ").strip().lower()
+                if ver == "si":
+                    visor = GestorImagen()
+                    try:
+                        visor.guardar_imagen_desde_url(pieza.url_imagen, f"pieza_{pieza.titulo}_{object_id}")
+                    except Exception:
+                        print("No se pudo mostrar o guardar la imagen. Puede que el formato no sea soportado o la imagen no esté disponible.")
+            else:
+                print("No hay imagen disponible para esta pieza.")
+            return pieza
+        else:
+            print("No se encontró la pieza o no hay información disponible para ese ID.")
+            return None
