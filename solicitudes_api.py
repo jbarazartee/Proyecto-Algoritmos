@@ -80,6 +80,8 @@ class ConsultasMuseo:
         try:
             resp = requests.get(url)
             ids = resp.json().get("objectIDs", [])
+            contador = 0
+            total = len(ids) 
             for oid in ids:
                 try:
                     pieza = self.buscar_pieza_basica(oid)
@@ -90,6 +92,11 @@ class ConsultasMuseo:
                     if not error_mostrado:
                         print("Algunas piezas no pudieron ser recuperadas o no existen. Se omiten del listado.")
                         error_mostrado = True
+                contador += 1
+                if contador % 20 == 0 and contador < total:
+                    seguir = input("¿Mostrar más piezas? (si/no): ").strip().lower()
+                    if seguir != "si":
+                        break  
         except Exception:
             print("No se pudo obtener la lista de piezas para este departamento.")
         return piezas
@@ -102,10 +109,17 @@ class ConsultasMuseo:
         """
         lista = obtener_nacionalidades()
         print("Nacionalidades disponibles:")
-        for n in lista:
-            print(n)
+        contador = 0
+        for nacionalidad in lista:
+            print(nacionalidad)
+            contador += 1
+            if contador == 30:
+                accion = input("Quiere ver mas nacionalidades? (si/no): ")
+                if accion.lower() != "si":
+                    break
+                contador = 0
         nacionalidad = input("Ingrese la nacionalidad del autor: ").strip()
-        if nacionalidad not in lista:
+        if nacionalidad.strip().lower() not in [n.strip().lower() for n in lista]:
             print("Nacionalidad no encontrada.")
             return []
         url = f"https://collectionapi.metmuseum.org/public/collection/v1/search?artistOrCulture=true&q={nacionalidad.lower()}"
@@ -146,7 +160,6 @@ class ConsultasMuseo:
         error_mostrado = False
         try:
             resp = requests.get(url)
-            time.sleep(0.5)
             ids = resp.json().get("objectIDs", [])
             contador = 0
             total = len(ids)
