@@ -4,7 +4,7 @@ import requests
 from Departamento import Departamento
 from Pieza_Detallada import Pieza_Detallada
 from visor import GestorImagen
-from nacionalidades_disponibles import obtener_nacionalidades
+from Nacionalidades_Disponibles import obtener_nacionalidades
 
 class ConsultasMuseo:
     """
