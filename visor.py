@@ -5,18 +5,16 @@ import requests
 from PIL import Image
 
 class GestorImagen:
-
 """
 Clase para la descarga y visualizacion de imagenes
 """
-  def guardar_imagen_desde_url(self, url, nombre_archivo):
-   """
-   Metodo que descarga la imagen desde la URL, y la guarda dentro de la carpeta (localmente)
-   
-   Args: url(str): el link de donde se descargara la imagen; nombre_archivo(str): el nombre base del archivo
-   Returns: str or None: realiza la rutad del archivo, y si no lo logra hacer, regresa "None"
-   """
-       try:
+    def guardar_imagen_desde_url(self, url, nombre_archivo):
+    """
+    Metodo que descarga la imagen desde la URL, y la guarda dentro de la carpeta (localmente)
+    Args: url(str): el link de donde se descargara la imagen; nombre_archivo(str): el nombre base del archivo
+    Returns: str or None: realiza la rutad del archivo, y si no lo logra hacer, regresa "None"
+    """
+        try:
             response = requests.get(url, stream=True)
             response.raise_for_status()
             content_type = response.headers.get('Content-Type')
@@ -44,10 +42,10 @@ Clase para la descarga y visualizacion de imagenes
         return nombre_archivo_final
 
     def mostrar_imagen_archivo(self, ruta):
-        """ 
-        Muestra una imagen desde un archivo local usando la biblioteca Pillow.
-        Args: ruta(str): la ruta del archivo a mostrar
-        """
+    """ 
+    Muestra una imagen desde un archivo local usando la biblioteca Pillow.
+    Args: ruta(str): la ruta del archivo a mostrar
+    """
         try:
             img = Image.open(ruta)
             img.show()
